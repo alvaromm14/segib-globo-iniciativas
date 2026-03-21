@@ -7,31 +7,44 @@
   import { format } from "d3-format";
   import { scaleLinear } from "d3-scale";
   import { max } from "d3-array";
-  import { onMount } from "svelte";
 
-  onMount(() => {
+  window.addEventListener("DOMContentLoaded", (event) => {
     function updateIframeHeight() {
-      const height = Math.ceil(document.body.scrollHeight);
-      const width = Math.ceil(document.body.scrollWidth);
+      const el = document.documentElement;
+      const rect = el.getBoundingClientRect();
+      const styles = window.getComputedStyle(el);
+      const margin =
+        parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+      const height = Math.ceil(rect.height + margin);
+
       window.parent.postMessage(
-        { type: "resize-iframe", value: height, width },
+        {
+          type: "resize-iframe",
+          value: height,
+        },
         "*",
       );
     }
-
     updateIframeHeight();
 
     if (window.ResizeObserver) {
-      new ResizeObserver(() => updateIframeHeight()).observe(
-        document.documentElement,
-      );
+      new ResizeObserver(() => {
+        updateIframeHeight();
+      }).observe(document.documentElement);
     } else {
+      window.addEventListener("load", updateIframeHeight);
       window.addEventListener("resize", updateIframeHeight);
     }
 
-    window.addEventListener("message", (event) => {
-      if (event.data.type === "request-resize") updateIframeHeight();
-    });
+    window.addEventListener(
+      "message",
+      (event) => {
+        if (event.data.type === "request-resize") {
+          updateIframeHeight();
+        }
+      },
+      false,
+    );
   });
 
   const formatThousands = (n) => format(",")(n).replace(/,/g, ".");
