@@ -51,6 +51,7 @@
         flex: 1;
         position: relative;
         border-radius: 4px;
+        border: 1px solid #d0d0d0;
         overflow: visible;
     }
 

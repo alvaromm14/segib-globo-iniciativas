@@ -72,7 +72,7 @@
             max(Object.values(iniciativasByNumId)) / 2,
             max(Object.values(iniciativasByNumId)) ?? 1,
         ])
-        .range(["#ffffd9", "#ffcb04", "#ef4423"]);
+        .range(["#ffffd9", "#ffda4d", "#ef4423"]);
 
     $: getCountryColor = (country) => {
         if (selectedCountryName && country.name === selectedCountryName)

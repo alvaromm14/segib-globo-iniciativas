@@ -57,7 +57,7 @@
       max(data.map((d) => d.iniciativas)) / 2,
       max(data.map((d) => d.iniciativas)),
     ])
-    .range(["#ffffd9", "#ffcb04", "#ef4423"]);
+    .range(["#ffffd9", "#ffda4d", "#ef4423"]);
 
   function handleTooltipChange(e) {
     tooltipData = e.detail.tooltipData;
