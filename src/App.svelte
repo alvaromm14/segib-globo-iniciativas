@@ -8,6 +8,9 @@
   import { scaleLinear } from "d3-scale";
   import { max } from "d3-array";
 
+  let width = 400;
+  $: height = width;
+
   window.addEventListener("DOMContentLoaded", (event) => {
     function updateIframeHeight() {
       const el = document.documentElement;
