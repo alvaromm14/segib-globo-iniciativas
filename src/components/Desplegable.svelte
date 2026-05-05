@@ -1,5 +1,6 @@
 <script>
     import { fade } from "svelte/transition";
+    import { onMount } from "svelte";
 
     export let options = [];
     export let value = "";
@@ -7,8 +8,6 @@
     export let formatCount = null;
 
     let dropdownOpen = false;
-
-    import { onMount } from "svelte";
 
     onMount(() => {
         const handleClickOutside = (event) => {
@@ -42,7 +41,6 @@
             </svg>
         </div>
     </button>
-
     {#if dropdownOpen}
         <ul class="dropdown" transition:fade={{ duration: 150 }}>
             <li
@@ -51,7 +49,7 @@
                     dropdownOpen = false;
                 }}
             >
-                <span class="placeholder">Todos los países</span>
+                <span class="placeholder">Total Iberoamérica</span>
             </li>
             {#each options as option}
                 <li
@@ -62,11 +60,11 @@
                 >
                     {option.label}
                     {#if option.count !== undefined}
-                        <span class="count"
-                            >({formatCount
+                        <span class="count">
+                            ({formatCount
                                 ? formatCount(option.count)
-                                : option.count})</span
-                        >
+                                : option.count})
+                        </span>
                     {/if}
                 </li>
             {/each}
@@ -74,8 +72,33 @@
     {/if}
 </div>
 
+<nav class="side-menu">
+    <ul>
+        <li class:active={value === ""} on:click={() => (value = "")}>
+            <span class="placeholder-item">Total Iberoamérica</span>
+        </li>
+        {#each options as option}
+            <li
+                class:active={value === option.label}
+                on:click={() => (value = option.label)}
+            >
+                {option.label}
+                {#if option.count !== undefined}
+                    <span class="count">
+                        ({formatCount
+                            ? formatCount(option.count)
+                            : option.count})
+                    </span>
+                {/if}
+            </li>
+        {/each}
+    </ul>
+</nav>
+
 <style>
+    /* ── DROPDOWN (Móvil por defecto) ── */
     .select-wrapper {
+        display: block;
         position: relative;
         margin: 0 auto;
         width: 100%;
@@ -94,16 +117,15 @@
         background-color: rgb(255, 255, 255);
         color: #3d3935;
         text-align: left;
+        cursor: pointer;
     }
 
     .select-trigger:hover {
         border-color: #aaa;
     }
-
     .select-trigger:focus {
         outline: none;
     }
-
     .select-wrapper.open .select-trigger {
         outline: 2px solid #2684ff;
         outline-offset: -1px;
@@ -130,11 +152,9 @@
     .select-wrapper.open .chevron {
         transform: rotate(180deg);
     }
-
     .placeholder {
         color: #aaa;
     }
-
     .selected {
         color: #3d3935;
     }
@@ -158,6 +178,7 @@
     .dropdown li {
         padding: 9px 14px;
         color: #3d3935;
+        cursor: pointer;
         user-select: none;
     }
 
@@ -165,8 +186,55 @@
         background: #deebff;
     }
 
+    /* ── MENÚ LATERAL (Oculto por defecto en móvil) ── */
+    .side-menu {
+        display: none;
+        flex-shrink: 0;
+        margin-left: 10px;
+    }
+
+    .side-menu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .side-menu li {
+        padding: 8px 10px;
+        border-radius: 4px;
+        color: #3d3935;
+        cursor: pointer;
+        user-select: none;
+        font-size: 0.9rem;
+        border-left: 4px solid transparent;
+        transition:
+            background 100ms,
+            border-color 100ms;
+    }
+
+    .side-menu li:hover {
+        background: #deebff;
+    }
+    .side-menu li.active {
+        background: #212c55;
+        border-left-color: #63ffa1;
+        color: white;
+        font-weight: 600;
+    }
+
     .count {
         color: #aaa;
         font-size: 0.75rem;
+    }
+
+    /* ── MEDIA QUERIES: Inversión de visibilidad ── */
+    @media (min-width: 1000px) {
+        .select-wrapper {
+            display: none; /* Oculta dropdown en desktop */
+        }
+
+        .side-menu {
+            display: block; /* Muestra menú lateral en desktop */
+        }
     }
 </style>

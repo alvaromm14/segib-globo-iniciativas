@@ -92,7 +92,7 @@
     }
 
     .marker-count {
-        font-weight: 200;
+        font-weight: 400;
         text-shadow:
             -2px 0 0 white,
             2px 0 0 white,

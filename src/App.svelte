@@ -11,6 +11,7 @@
   let width = 400;
   $: height = width;
 
+  // Mantengo tu lógica de resize intacta
   window.addEventListener("DOMContentLoaded", (event) => {
     function updateIframeHeight() {
       const el = document.documentElement;
@@ -83,28 +84,31 @@
 
 <div class="chart-container">
   <h1>
-    Iniciativas de cooperación Sur-Sur Bilateral y Triangular de los países de
-    Iberoamérica con todos los socios (2007-2024)
+    Iniciativas de Cooperación Sur-Sur y Triangular intercambiadas con cada
+    socio (2023-2024)
   </h1>
+  <div class="legend-wrapper">
+    <Legend {colorScale} {iniciativas} data={tooltipData} />
+  </div>
+  <div class="main-layout">
+    <aside class="sidebar">
+      <Desplegable
+        options={desplegableOptions}
+        bind:value={selectedCountryName}
+        placeholder="Total Iberoamérica"
+        formatCount={formatThousands}
+      />
+    </aside>
 
-  <div class="controls">
-    <Desplegable
-      options={desplegableOptions}
-      bind:value={selectedCountryName}
-      placeholder="Selecciona un país"
-      formatCount={formatThousands}
-    />
-    <div class="legend-wrapper">
-      <Legend {colorScale} {iniciativas} data={tooltipData} />
+    <div class="viz-content">
+      <Globo
+        {world}
+        {data}
+        {selectedCountryName}
+        on:tooltipChange={handleTooltipChange}
+      />
     </div>
   </div>
-
-  <Globo
-    {world}
-    {data}
-    {selectedCountryName}
-    on:tooltipChange={handleTooltipChange}
-  />
 </div>
 
 <style>
@@ -122,11 +126,39 @@
     margin-bottom: 1rem;
   }
 
-  .controls {
+  /* Layout base (móvil): una columna */
+  .main-layout {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     gap: 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    z-index: 10;
+  }
+
+  .legend-wrapper {
     margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Layout Desktop: menú al lado del globo */
+  @media (min-width: 1000px) {
+    .main-layout {
+      flex-direction: row;
+    }
+
+    .sidebar {
+      width: 180px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 10px;
+    }
+
+    .viz-content {
+      flex-grow: 1;
+    }
   }
 </style>

@@ -75,8 +75,7 @@
         .range(["#ffffd9", "#ffda4d", "#ef4423"]);
 
     $: getCountryColor = (country) => {
-        if (selectedCountryName && country.name === selectedCountryName)
-            return "#212c55";
+        if (country.name === selectedCountryName) return "#212C55";
         const val = iniciativasByNumId[country.id];
         if (!val) return "#e8eaea";
         return colorScale(val);
@@ -183,7 +182,9 @@
             <path
                 d={path(tooltipData)}
                 fill="transparent"
-                stroke="#212c55"
+                stroke={tooltipData.name === selectedCountryName
+                    ? "#63ffa1"
+                    : "#212c55"}
                 stroke-width="1.5"
             />
         {/if}
