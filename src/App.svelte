@@ -123,7 +123,7 @@
     color: #212c55;
     font-size: 20px;
     line-height: 26px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   /* Layout base (móvil): una columna */
@@ -145,7 +145,7 @@
   }
 
   /* Layout Desktop: menú al lado del globo */
-  @media (min-width: 1000px) {
+  @media (min-width: 900px) {
     .main-layout {
       flex-direction: row;
     }

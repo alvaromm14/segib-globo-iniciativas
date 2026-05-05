@@ -100,7 +100,7 @@
     .select-wrapper {
         display: block;
         position: relative;
-        margin: 0 auto;
+        margin: 10px auto 15px auto;
         width: 100%;
         max-width: 300px;
     }
@@ -228,7 +228,7 @@
     }
 
     /* ── MEDIA QUERIES: Inversión de visibilidad ── */
-    @media (min-width: 1000px) {
+    @media (min-width: 900px) {
         .select-wrapper {
             display: none; /* Oculta dropdown en desktop */
         }
