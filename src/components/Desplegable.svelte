@@ -5,7 +5,7 @@
     export let options = [];
     export let value = "";
     export let placeholder = "Seleccionar";
-    export let formatCount = null;
+    export let formatCount = null; // Se mantiene por compatibilidad de props, aunque ya no se usa en el HTML
 
     let dropdownOpen = false;
 
@@ -41,16 +41,9 @@
             </svg>
         </div>
     </button>
+
     {#if dropdownOpen}
         <ul class="dropdown" transition:fade={{ duration: 150 }}>
-            <li
-                on:click={() => {
-                    value = "";
-                    dropdownOpen = false;
-                }}
-            >
-                <span class="placeholder">Total Iberoamérica</span>
-            </li>
             {#each options as option}
                 <li
                     on:click={() => {
@@ -59,13 +52,6 @@
                     }}
                 >
                     {option.label}
-                    {#if option.count !== undefined}
-                        <span class="count">
-                            ({formatCount
-                                ? formatCount(option.count)
-                                : option.count})
-                        </span>
-                    {/if}
                 </li>
             {/each}
         </ul>
@@ -74,22 +60,12 @@
 
 <nav class="side-menu">
     <ul>
-        <li class:active={value === ""} on:click={() => (value = "")}>
-            <span class="placeholder-item">Total Iberoamérica</span>
-        </li>
         {#each options as option}
             <li
                 class:active={value === option.label}
                 on:click={() => (value = option.label)}
             >
                 {option.label}
-                {#if option.count !== undefined}
-                    <span class="count">
-                        ({formatCount
-                            ? formatCount(option.count)
-                            : option.count})
-                    </span>
-                {/if}
             </li>
         {/each}
     </ul>
@@ -186,7 +162,7 @@
         background: #deebff;
     }
 
-    /* ── MENÚ LATERAL (Oculto por defecto en móvil) ── */
+    /* ── MENÚ LATERAL (Desktop) ── */
     .side-menu {
         display: none;
         flex-shrink: 0;
@@ -222,19 +198,14 @@
         font-weight: 600;
     }
 
-    .count {
-        color: #aaa;
-        font-size: 0.75rem;
-    }
-
-    /* ── MEDIA QUERIES: Inversión de visibilidad ── */
+    /* ── MEDIA QUERIES ── */
     @media (min-width: 900px) {
         .select-wrapper {
-            display: none; /* Oculta dropdown en desktop */
+            display: none;
         }
 
         .side-menu {
-            display: block; /* Muestra menú lateral en desktop */
+            display: block;
         }
     }
 </style>
